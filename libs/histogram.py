@@ -1,7 +1,14 @@
 import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+
+
+# img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
+# img = cv2.resize(img, (0 ,0), fx = 0.5, fy= 0.5)
+
 
 # function to obtain histogram of an image
-def calculate_histo(img, m, n):
+def calculate_histogram(img, m, n):
     """
         m: number of rows
         n: number of columns
@@ -38,7 +45,12 @@ def plot_histogram(r, count):
         count: the number of pixels for each intensity level
     """ 
     
-    plt.stem(r, count)
+    plt.plot(r, count)
     plt.xlabel('intensity value')
     plt.ylabel('number of pixels')
     plt.title('Histogram')
+    plt.show()
+    
+
+# Already defined histogram function
+# plt.hist(img.ravel(),256,[0,256]); plt.show()
