@@ -24,8 +24,7 @@ def AverageFilter ():
             
     img_new = img_new.astype(np.uint8)
     cv2.imshow("dst ", img_new)
-    cv2.imwrite('blurred.tif', img_new)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-AverageFilter()
+# AverageFilter()
