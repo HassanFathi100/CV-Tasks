@@ -16,22 +16,22 @@
 3.  Create a Virtual Environment (Optional)
 
         ```sh
-        virtualenv CV-Team1
+        python -m venv env 
         ```
 
 4.  Activate the virtual environment
 
     - using CMD
       ```sh
-      .\CV-Team1\Scripts\activate
+      .\env\Scripts\activate
       ```
     - using PowerShell
       ```sh
-      .\CV-Team1\Scripts\Activate.ps1
+      .\env\Scripts\Activate.ps1
       ```
     - using Bash
       ```sh
-      source CV-Team1/bin/activate
+      source env/bin/activate
       ```
 
 5.  Install the requirements and dependancies
