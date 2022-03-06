@@ -45,7 +45,7 @@ def plot_histogram(r, count):
         count: the number of pixels for each intensity level
     """ 
     
-    plt.plot(r, count)
+    plt.stem(r, count)
     plt.xlabel('intensity value')
     plt.ylabel('number of pixels')
     plt.title('Histogram')
