@@ -110,5 +110,5 @@ cv2.destroyAllWindows()
 
     
 
-# MFilter()
+# MedFilter()
 # AverageFilter()
