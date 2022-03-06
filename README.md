@@ -7,19 +7,26 @@
       git clone https://github.com/HassanFathi100/CV-Tasks.git
       ```
 
-2.  Install Virtualenv (Optional)
+2.  Navigate to the created directory
+
+    - 
+      ```sh
+      cd CV-Tasks
+      ```
+
+3.  Install Virtualenv (Optional)
 
         ```sh
         pip install virtualenv
         ```
 
-3.  Create a Virtual Environment (Optional)
+4.  Create a Virtual Environment (Optional)
 
         ```sh
         python -m venv env 
         ```
 
-4.  Activate the virtual environment
+5.  Activate the virtual environment
 
     - using CMD
       ```sh
@@ -34,13 +41,13 @@
       source env/bin/activate
       ```
 
-5.  Install the requirements and dependancies
+6.  Install the requirements and dependancies
 
     ```sh
     pip install -r requirements.txt
     ```
 
-6.  Run the application
+7.  Run the application
     ```sh
     python main.py
     ```
