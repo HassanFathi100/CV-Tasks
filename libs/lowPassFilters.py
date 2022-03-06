@@ -6,6 +6,7 @@ import numpy as np
 import numpy
 from PIL import Image
 import cv2
+
 def AverageFilter ():
     img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
     
@@ -58,7 +59,7 @@ def MedianFilter(data, filter_size):
     return data_final
 
 
-def main():
+def MedFilter():
     img = Image.open('./assets/apple.jpg').convert("L")
     arr = numpy.array(img)
     removed_noise = MedianFilter(arr, 6) 
@@ -66,7 +67,48 @@ def main():
     img.show()
 
 
+
+img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
+
+def corr(img,mask):
+    row,col=img.shape
+    m,n=mask.shape
+    new=np.zeros((row+m-1,col+n-1))
+    n=n//2
+    m=m//2
+    filtered_img=np.zeros(img.shape)
+    new[m:new.shape[0]-m,n:new.shape[1]-n]=img
+    for i in range (m,new.shape[0]-m):
+        for j in range (n,new.shape[1]-n):
+            temp=new[i-m:i+m+1,j-m:j+m+1]
+            result=temp*mask
+            filtered_img[i-m,j-n]=result.sum()
+
+    return filtered_img
+
+def gaussian(m,n,sigma):
+    gaussian=np.zeros((m,n))
+    m=m//2
+    n=n//2
+    for x in range (-m,m+1):
+        for y in range (-n,n+1):
+            x1=sigma*(2*np.pi)**2
+            x2=np.exp(-(x**2+y**2)/(2*sigma**2))
+            gaussian[x+m,y+n]=(1/x1)*x2
+    
+    return gaussian
+
+g=gaussian(5,5,2)
+n=corr(img,g)
+img_new = n.astype(np.uint8)
+
+cv2.imshow("dst ", img_new)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
     
 
-# main()
+# MFilter()
 # AverageFilter()
