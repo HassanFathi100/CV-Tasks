@@ -1,33 +1,25 @@
 """Histogram normalization
     """
-import histogram as hist
 import numpy as np
-import matplotlib.pyplot as plt
+from . import helper as Helper
+from . import histogram as hist
 
-def normalize_histogram(img):
-    img_array = np.array(img)
 
-    #get minimum and maximum pixel value in the image
+def normalize_histogram(img_grayscale: np.ndarray):
+    img_array = np.array(img_grayscale)
+
+    # get minimum and maximum pixel value in the image
     minimum_value = np.min(img_array)
     maximum_value = np.max(img_array)
 
-    #normalize equation
-    normalized_img = (img_array - minimum_value) * (1.0 / (maximum_value - minimum_value))
+    # normalize equation
+    normalized_img = (img_array - minimum_value) * \
+        (1.0 / (maximum_value - minimum_value))
     m, n = normalized_img.shape
 
-    intensity_levels, count_intensity = hist.calculate_histogram(normalized_img, m, n)
+    intensity_levels, count_intensity = hist.calculate_histogram(
+        normalized_img, m, n)
 
-    return normalized_img, intensity_levels, count_intensity
+    Helper.plot_normalized(intensity_levels, count_intensity)
 
-def plot_normalized(r, count):
-    
-    """
-        r , count are the output of calculating histogram function
-        r: intensity values
-        count: the number of pixels for each intensity level
-    """ 
-    plt.plot(r, count)
-    plt.xlabel('intensity value')
-    plt.ylabel('number of pixels')
-    plt.title('Normalized Histogram')
-    plt.show()
+    return (normalized_img, intensity_levels, count_intensity)

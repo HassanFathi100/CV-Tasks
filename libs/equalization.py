@@ -1,49 +1,53 @@
 """Histogram equalization"""
 
-import cv2
 import numpy as np
-import histogram as hist
 from matplotlib import pyplot as plt
+from . import helper as Helper
+from . import histogram as hist
 
-# Reading image
-img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
-img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
 
-rows, columns = img.shape
+def equalization(img_grayscale: np.ndarray):
 
-# Histogram
-intensityValues, intensityCount = hist.calculate_histogram(img, rows, columns)
+    rows, columns = img_grayscale.shape
 
-# Converting list to numpay array
-intensityCountArray = np.array(intensityCount)
+    # Histogram
+    intensity_values, intensity_count = hist.calculate_histogram(
+        img_grayscale, rows, columns)
 
-# Get the sum of all bins
-intensityCountSum = np.sum(intensityCountArray)
+    # Converting list to numpay array
+    intensity_count_array = np.array(intensity_count)
 
-# Calculating propability density function
-PDF = intensityCountArray/intensityCountSum
+    # Get the sum of all bins
+    intensity_count_sum = np.sum(intensity_count_array)
 
-# Calculating Cumulative density function
-CDF = np.array([])
-CDF = np.cumsum(PDF)
+    # Calculating propability density function
+    PDF = intensity_count_array/intensity_count_sum
 
-# Rounding CDF values
-equalizedHistogram = np.round((255 * CDF), decimals = 0)
+    # Calculating Cumulative density function
+    CDF = np.array([])
+    CDF = np.cumsum(PDF)
 
-# Flattening the image 
-imgVector = img.ravel()
+    # Rounding CDF values
+    equalized_histogram = np.round((255 * CDF), decimals=0)
 
-# Converting 1D array (vector) to 2D array (image)
-mappedImgVector = []
-for pixel in imgVector:
-    mappedImgVector.append(equalizedHistogram[pixel])
+    # Flattening the image
+    img_vector = img_grayscale.ravel()
 
-finalImg = np.reshape(np.asarray(mappedImgVector), img.shape).astype(np.uint8)
+    # Converting 1D array (vector) to 2D array (image)
+    mapped_img_vector = []
+    for pixel in img_vector:
+        mapped_img_vector.append(equalized_histogram[pixel])
 
+    equalized_img = np.reshape(np.asarray(mapped_img_vector),
+                               img_grayscale.shape).astype(np.uint8)
+
+    Helper.store_img('./output/equalized_img.jpg', equalized_img)
+
+    return equalized_img
 
 # Already defined equalization function
 # equalizedImg_alreadyDefine = cv2.equalizeHist(img)
 
-cv2.imshow('Equalized Image', finalImg)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+
+# Already defined histogram function
+# plt.hist(img.ravel(),256,[0,256]); plt.show()

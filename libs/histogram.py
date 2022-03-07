@@ -1,56 +1,38 @@
-import matplotlib.pyplot as plt
+
 import numpy as np
-import cv2
+from . import helper as Helper
 
 
-# img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
-# img = cv2.resize(img, (0 ,0), fx = 0.5, fy= 0.5)
+def calculate_histogram(img_grayscale: np.ndarray, rows: int, columns: int):
+    """Calculate intensity values of all pixels in the image
 
+    Args:
+        img_grayscale (np.ndarray): original image (grayscale)
+        rows (int): number of rows in the image
+        columns (int): number of columns in the image
 
-# function to obtain histogram of an image
-def calculate_histogram(img, m, n):
+    Returns:
+        array: intensity values
+        int: number of pixels for each intensity
     """
-        m: number of rows
-        n: number of columns
 
-        get m, n from img.shape method.
-    """ 
     # intensity values
     intensity_levels = []
 
     # number of pixels for each intensity
-    count_intensity =[]
-      
-      
+    count_intensity = []
+
     # calculate intensity values
     for intensity in range(0, 256):
         intensity_levels.append(intensity)
         temp = 0
-          
+
         # loops on each pixel
-        for i in range(m):
-            for j in range(n):
-                if img[i, j]== intensity:
-                    temp+= 1
+        for i in range(rows):
+            for j in range(columns):
+                if img_grayscale[i, j] == intensity:
+                    temp += 1
         count_intensity.append(temp)
-          
+
+    Helper.plot_histogram(intensity_levels, count_intensity)
     return (intensity_levels, count_intensity)
-
-
-def plot_histogram(r, count):
-    
-    """
-        r , count are the output of calculating histogram function
-        r: intensity values
-        count: the number of pixels for each intensity level
-    """ 
-    
-    plt.stem(r, count)
-    plt.xlabel('intensity value')
-    plt.ylabel('number of pixels')
-    plt.title('Histogram')
-    plt.show()
-    
-
-# Already defined histogram function
-# plt.hist(img.ravel(),256,[0,256]); plt.show()

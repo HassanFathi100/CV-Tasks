@@ -1,9 +1,9 @@
 """Detect edges using the following masks: Sobel, Roberts, Prewitt and Canny edge detectors."""
 
 
-import cv2
+from . import helper as Helper
 import numpy as np
-import lowPassFilters
+from . import lowPassFilters
 from scipy import ndimage
 
 
@@ -181,7 +181,7 @@ def canny_detector(img_grayscale: np.ndarray):
     final_matrix = hysteresis(threshold_matrix, weak_value, strong_value)
 
     canny_img = final_matrix.astype(np.uint8)
-
+    Helper.store_img('./output/canny_img.jpg', canny_img)
     return canny_img
 
 
@@ -198,6 +198,7 @@ def sobel_detector(img_grayscale: np.ndarray):
     magnitude_matrix, _ = sobel_kernels(img_grayscale)
     sobel_img = magnitude_matrix.astype(np.uint8)
 
+    Helper.store_img('./output/sobel_img.jpg', sobel_img)
     return sobel_img
 
 
@@ -228,6 +229,7 @@ def roberts_detector(img_grayscale: np.ndarray):
 
     roberts_img = edged_matrix.astype(np.uint8)
 
+    Helper.store_img('./output/roberts_img.jpg', roberts_img)
     return roberts_img
 
 
@@ -253,4 +255,5 @@ def prewitt_detector(img_grayscale: np.ndarray):
 
     prewitt_img = magnitude_matrix.astype(np.uint8)
 
+    Helper.store_img('./output/prewitt_img.jpg', prewitt_img)
     return prewitt_img

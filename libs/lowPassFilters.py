@@ -1,17 +1,15 @@
 """Implement here functions that filter the noisy images using the following low pass filters:
     Average, Gaussian and median filters.
     """
-import cv2
+
 import numpy as np
-import numpy
 from PIL import Image
-import cv2
+from . import helper as Helper
 
 
-def average_filter():
-    img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
+def average_filter(img_grayscale: np.ndarray):
 
-    m, n = img.shape
+    m, n = img_grayscale.shape
 
     # Develop Averaging filter(3, 3) mask
     mask = np.ones([3, 3], dtype=int)
@@ -22,23 +20,23 @@ def average_filter():
 
     for i in range(1, m-1):
         for j in range(1, n-1):
-            temp = img[i-1, j-1]*mask[0, 0]+img[i-1, j]*mask[0, 1]+img[i-1, j + 1]*mask[0, 2]+img[i, j-1]*mask[1, 0] + img[i, j] * \
-                mask[1, 1]+img[i, j + 1]*mask[1, 2]+img[i + 1, j-1]*mask[2,
-                                                                         0]+img[i + 1, j]*mask[2, 1]+img[i + 1, j + 1]*mask[2, 2]
+            temp = img_grayscale[i-1, j-1]*mask[0, 0]+img_grayscale[i-1, j]*mask[0, 1]+img_grayscale[i-1, j + 1]*mask[0, 2]+img_grayscale[i, j-1]*mask[1, 0] + img_grayscale[i, j] * \
+                mask[1, 1]+img_grayscale[i, j + 1]*mask[1, 2]+img_grayscale[i + 1, j-1]*mask[2,
+                                                                                             0]+img_grayscale[i + 1, j]*mask[2, 1]+img_grayscale[i + 1, j + 1]*mask[2, 2]
 
             img_new[i, j] = temp
 
-    img_new = img_new.astype(np.uint8)
-    cv2.imshow("dst ", img_new)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    average_filterd_img = img_new.astype(np.uint8)
+
+    Helper.store_img('./output/average_filterd_img.jpg', average_filterd_img)
+    return average_filterd_img
 
 
 def median_filter_calc(data, filter_size):
     temp = []
     indexer = filter_size // 2
     data_final = []
-    data_final = numpy.zeros((len(data), len(data[0])))
+    data_final = np.zeros((len(data), len(data[0])))
     for i in range(len(data)):
 
         for j in range(len(data[0])):
@@ -61,25 +59,24 @@ def median_filter_calc(data, filter_size):
     return data_final
 
 
-def median_filter():
-    img = Image.open('./assets/apple.jpg').convert("L")
-    arr = numpy.array(img)
+def median_filter(img_path):
+    img = Image.open(img_path).convert("L")
+    arr = np.array(img)
     noise_free_arr = median_filter_calc(arr, 6)
     noise_free_img = Image.fromarray(noise_free_arr)
     noise_free_img.show()
+    Helper.store_img('./output/noise_free_img.jpg', noise_free_img)
+    return noise_free_arr
 
 
-img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
-
-
-def correlation(img, mask):
-    row, col = img.shape
+def correlation(img_grayscale, mask):
+    row, col = img_grayscale.shape
     m, n = mask.shape
     new = np.zeros((row+m-1, col+n-1))
     n = n//2
     m = m//2
-    filtered_img = np.zeros(img.shape)
-    new[m:new.shape[0]-m, n:new.shape[1]-n] = img
+    filtered_img = np.zeros(img_grayscale.shape)
+    new[m:new.shape[0]-m, n:new.shape[1]-n] = img_grayscale
     for i in range(m, new.shape[0]-m):
         for j in range(n, new.shape[1]-n):
             temp = new[i-m:i+m+1, j-m:j+m+1]
@@ -102,14 +99,15 @@ def gaussian_filter(m, n, sigma):
     return gaussian
 
 
-# g = gaussian_filter(5, 5, 2)
-# n = correlation(img, g)
-# img_new = n.astype(np.uint8)
+def apply_gaussian_filter(img_grayscale: np.ndarray):
 
-# cv2.imshow("dst ", img_new)
+    g = gaussian_filter(5, 5, 2)
+    n = correlation(img_grayscale, g)
+    gaussian_filtered_img = n.astype(np.uint8)
 
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+    Helper.store_img('./output/gaussian_filtered_img.jpg',
+                     gaussian_filtered_img)
+    return gaussian_filtered_img
 
 
 # MFilter()
