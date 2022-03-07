@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 
 
 img = cv2.imread('./assets/apple.jpg', cv2.IMREAD_GRAYSCALE)
-img = cv2.resize(img, (0 ,0), fx = 0.5, fy= 0.5)
+img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
 
 rows, columns = img.shape
 

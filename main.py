@@ -15,4 +15,5 @@ from libs import curves, edgeDetection, equalization, helper, lowPassFilters, no
 
 def HelloTeam():
     print("Hello Team!")
-lowPassFilters.AverageFilter()
+    
+lowPassFilters.average_filter()
