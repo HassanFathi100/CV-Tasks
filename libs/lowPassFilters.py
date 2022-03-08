@@ -5,9 +5,11 @@
 import numpy as np
 from PIL import Image
 from . import helper as Helper
+import cv2
 
 
-def average_filter(img_grayscale: np.ndarray):
+def average_filter(image_path: str):
+    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
     m, n = img_grayscale.shape
 
@@ -28,7 +30,8 @@ def average_filter(img_grayscale: np.ndarray):
 
     average_filterd_img = img_new.astype(np.uint8)
 
-    Helper.store_img('./output/average_filterd_img.jpg', average_filterd_img)
+    Helper.store_img_cv2(
+        './output/average_filterd_img.jpg', average_filterd_img)
     return average_filterd_img
 
 
@@ -65,7 +68,7 @@ def median_filter(img_path):
     noise_free_arr = median_filter_calc(arr, 6)
     noise_free_img = Image.fromarray(noise_free_arr)
     noise_free_img.show()
-    Helper.store_img('./output/noise_free_img.jpg', noise_free_img)
+    Helper.store_img_cv2('./output/noise_free_img.jpg', noise_free_img)
     return noise_free_arr
 
 
@@ -99,14 +102,16 @@ def gaussian_filter(m, n, sigma):
     return gaussian
 
 
-def apply_gaussian_filter(img_grayscale: np.ndarray):
+def apply_gaussian_filter(image_path: str):
 
+    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     g = gaussian_filter(5, 5, 2)
     n = correlation(img_grayscale, g)
+
     gaussian_filtered_img = n.astype(np.uint8)
 
-    Helper.store_img('./output/gaussian_filtered_img.jpg',
-                     gaussian_filtered_img)
+    Helper.store_img_cv2('./output/gaussian_filtered_img.jpg',
+                         gaussian_filtered_img)
     return gaussian_filtered_img
 
 

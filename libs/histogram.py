@@ -1,13 +1,14 @@
 
 import numpy as np
 from . import helper as Helper
+import cv2
 
 
-def calculate_histogram(img_grayscale: np.ndarray, rows: int, columns: int):
+def calculate_histogram(image_path: str):
     """Calculate intensity values of all pixels in the image
 
     Args:
-        img_grayscale (np.ndarray): original image (grayscale)
+        img (np.ndarray): original image (grayscale)
         rows (int): number of rows in the image
         columns (int): number of columns in the image
 
@@ -15,6 +16,9 @@ def calculate_histogram(img_grayscale: np.ndarray, rows: int, columns: int):
         array: intensity values
         int: number of pixels for each intensity
     """
+
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    rows, columns = img.shape
 
     # intensity values
     intensity_levels = []
@@ -30,9 +34,8 @@ def calculate_histogram(img_grayscale: np.ndarray, rows: int, columns: int):
         # loops on each pixel
         for i in range(rows):
             for j in range(columns):
-                if img_grayscale[i, j] == intensity:
+                if img[i, j] == intensity:
                     temp += 1
         count_intensity.append(temp)
 
-    Helper.plot_histogram(intensity_levels, count_intensity)
     return (intensity_levels, count_intensity)
