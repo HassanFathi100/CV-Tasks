@@ -5,6 +5,7 @@ from . import helper as Helper
 import numpy as np
 from . import lowPassFilters
 from scipy import ndimage
+import cv2
 
 
 def sobel_kernels(img_grayscale: np.ndarray):
@@ -153,7 +154,7 @@ def hysteresis(img_grayscale: np.ndarray, weak_value: int, strong_value: int = 2
     return img_grayscale
 
 
-def canny_detector(img_grayscale: np.ndarray):
+def canny_detector(image_path: str):
     """Canny edge detector algorithm
 
     Args:
@@ -162,6 +163,7 @@ def canny_detector(img_grayscale: np.ndarray):
     Returns:
         _type_: matrix of the image with canny mask applied 
     """
+    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
     # Noise reduction; by applying Gaussian blur to smooth it, where -> kernal 5x5, sigma = 1
     gaussian_mask = lowPassFilters.gaussian_filter(5, 5, 1)
@@ -181,11 +183,12 @@ def canny_detector(img_grayscale: np.ndarray):
     final_matrix = hysteresis(threshold_matrix, weak_value, strong_value)
 
     canny_img = final_matrix.astype(np.uint8)
-    Helper.store_img('./output/canny_img.jpg', canny_img)
+
+    Helper.store_img_cv2('./output/canny_img.jpg', canny_img)
     return canny_img
 
 
-def sobel_detector(img_grayscale: np.ndarray):
+def sobel_detector(image_path: str):
     """Detect edges using Sobel algorithm:
 
     Args:
@@ -194,15 +197,15 @@ def sobel_detector(img_grayscale: np.ndarray):
     Returns:
         _type_: matrix of the image with sobel mask applied 
     """
-
+    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     magnitude_matrix, _ = sobel_kernels(img_grayscale)
     sobel_img = magnitude_matrix.astype(np.uint8)
 
-    Helper.store_img('./output/sobel_img.jpg', sobel_img)
+    Helper.store_img_cv2('./output/sobel_img.jpg', sobel_img)
     return sobel_img
 
 
-def roberts_detector(img_grayscale: np.ndarray):
+def roberts_detector(image_path: str):
     """Roberts edge detector algorithm
 
     Args:
@@ -211,6 +214,7 @@ def roberts_detector(img_grayscale: np.ndarray):
     Returns:
         _type_: matrix of the image with Roberts mask applied 
     """
+    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
     # Initialize pair of  Roberts cross operator
     roberts_cross_v = np.array([[1, 0], [0, -1]])
@@ -229,11 +233,11 @@ def roberts_detector(img_grayscale: np.ndarray):
 
     roberts_img = edged_matrix.astype(np.uint8)
 
-    Helper.store_img('./output/roberts_img.jpg', roberts_img)
+    Helper.store_img_cv2('./output/roberts_img.jpg', roberts_img)
     return roberts_img
 
 
-def prewitt_detector(img_grayscale: np.ndarray):
+def prewitt_detector(image_path: str):
     """Prewitt edge detector algorithm
 
     Args:
@@ -243,6 +247,7 @@ def prewitt_detector(img_grayscale: np.ndarray):
         _type_: matrix of the image with Prewitt mask applied 
     """
 
+    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     Kx = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]], np.float32)
     Ky = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]], np.float32)
 
@@ -255,5 +260,5 @@ def prewitt_detector(img_grayscale: np.ndarray):
 
     prewitt_img = magnitude_matrix.astype(np.uint8)
 
-    Helper.store_img('./output/prewitt_img.jpg', prewitt_img)
+    Helper.store_img_cv2('./output/prewitt_img.jpg', prewitt_img)
     return prewitt_img
