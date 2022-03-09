@@ -5,12 +5,24 @@
 import numpy as np
 import numpy 
 from PIL import Image
+<<<<<<< Updated upstream
 import helper as Helper
 import cv2
+=======
+from . import helper as Helper
+
+
+from PIL import Image, ImageOps
+>>>>>>> Stashed changes
 
 
 def average_filter(image_path: str):
-    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    # creating an og_image object
+    og_image = Image.open(image_path)
+    gray_image = ImageOps.grayscale(og_image)
+
+    # Convert it to numpy array
+    img_grayscale = np.array(gray_image)
 
     m, n = img_grayscale.shape
 
@@ -139,7 +151,13 @@ def gaussian_filter(m, n, sigma):
 
 def apply_gaussian_filter(image_path: str):
 
-    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    # creating an og_image object
+    og_image = Image.open(image_path)
+    gray_image = ImageOps.grayscale(og_image)
+
+    # Convert it to numpy array
+    img_grayscale = np.array(gray_image)
+
     g = gaussian_filter(5, 5, 2)
     n = correlation(img_grayscale, g)
 

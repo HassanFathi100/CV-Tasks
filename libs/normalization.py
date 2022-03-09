@@ -3,13 +3,18 @@
 import numpy as np
 from . import helper as Helper
 from . import histogram as hist
-import cv2
+
+from PIL import Image, ImageOps
 
 
 def normalize_histogram(image_path: str):
 
-    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    img_array = np.array(img_grayscale)
+    # creating an og_image object
+    og_image = Image.open(image_path)
+    gray_image = ImageOps.grayscale(og_image)
+
+    # Convert it to numpy array
+    img_array = np.array(gray_image)
 
     # get minimum and maximum pixel value in the image
     minimum_value = np.min(img_array)

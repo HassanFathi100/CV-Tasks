@@ -1,10 +1,12 @@
 
 import numpy as np
 from . import helper as Helper
-import cv2
 
 
-def calculate_histogram(image_path: str):
+from PIL import Image, ImageOps
+
+
+def calculate_histogram(gray_image: np.ndarray):
     """Calculate intensity values of all pixels in the image
 
     Args:
@@ -17,7 +19,13 @@ def calculate_histogram(image_path: str):
         int: number of pixels for each intensity
     """
 
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    # creating an og_image object
+    # og_image = Image.open(image_path)
+    # gray_image = ImageOps.grayscale(og_image)
+
+    # Convert it to numpy array
+    img = np.array(gray_image)
+
     rows, columns = img.shape
 
     # intensity values

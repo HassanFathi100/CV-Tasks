@@ -4,16 +4,24 @@ import numpy as np
 from matplotlib import pyplot as plt
 from . import helper as Helper
 from . import histogram
-import cv2
+
+
+from PIL import Image, ImageOps
 
 
 def equalization(image_path: str):
 
-    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    # creating an og_image object
+    og_image = Image.open(image_path)
+    gray_image = ImageOps.grayscale(og_image)
+
+    # Convert it to numpy array
+    img_grayscale = np.array(gray_image)
+
     rows, columns = img_grayscale.shape
 
     # Histogram
-    _, intensity_count = histogram.calculate_histogram(image_path)
+    _, intensity_count = histogram.calculate_histogram(img_grayscale)
 
     # Converting list to numpay array
     intensity_count_array = np.array(intensity_count)
@@ -43,7 +51,6 @@ def equalization(image_path: str):
                                img_grayscale.shape).astype(np.uint8)
 
     Helper.store_img_cv2('./output/equalized_img.jpg', equalized_img)
-
     return equalized_img
 
 # Already defined equalization function

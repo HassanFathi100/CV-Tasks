@@ -10,8 +10,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+from PIL import Image, ImageOps
+
+
 def store_img_cv2(filepath: str, img: np.ndarray):
     cv2.imwrite(filepath, img)
+    filename = filepath.split('output/')[1]
+    print(f'{filename} saved successfully in output directory.')
+
+
+def store_img_pil(img_matrix, filepath):
+    result = Image.fromarray((img_matrix).astype(np.uint8))
+    result.save(filepath)
     filename = filepath.split('output/')[1]
     print(f'{filename} saved successfully in output directory.')
 

@@ -1,8 +1,16 @@
-from libs import histogram, edgeDetection, equalization, noise, normalization, lowPassFilters
+from libs import edgeDetection, equalization, noise, normalization, lowPassFilters
+
+
+from PIL import Image, ImageOps
+import numpy as np
 
 image_path = './assets/lion.jpg'
 
-# Calling any function saves output images in the output directory
+# creating an og_image object
+og_image = Image.open(image_path)
+gray_image = ImageOps.grayscale(og_image)
+# Convert it to numpy array
+image = np.array(gray_image)
 
 
 def additive_noise():
@@ -18,14 +26,10 @@ def low_pass_filters():
 
 
 def edge_detection():
-    # edgeDetection.sobel_detector(image_path)
-    # edgeDetection.prewitt_detector(image_path)
-    # edgeDetection.roberts_detector(image_path)
+    edgeDetection.sobel_detector(image_path)
+    edgeDetection.prewitt_detector(image_path)
+    edgeDetection.roberts_detector(image_path)
     edgeDetection.canny_detector(image_path)
-
-
-def draw_curvers():
-    histogram.calculate_histogram(image_path)
 
 
 def equalize_img():
@@ -37,9 +41,9 @@ def normalize_img():
 
 
 # Run script
-# additive_noise()
-# low_pass_filters()
+
+additive_noise()
+low_pass_filters()
 edge_detection()
-# draw_curvers()
-# equalize_img()
-# normalize_img()
+equalize_img()
+normalize_img()

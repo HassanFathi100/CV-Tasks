@@ -1,16 +1,21 @@
 """Functions that add noise to the image; Uniform, Gaussian and salt & pepper noise."""
 
-import cv2
 import numpy as np
 import random
 from . import helper as Helper
-import cv2
 import matplotlib.pyplot as plt
+
+
+from PIL import Image, ImageOps
 
 
 def gaussian_noise(image_path):
 
-    image = cv2.imread(image_path)
+    # creating an og_image object
+    og_image = Image.open(image_path)
+    # Convert it to numpy array
+    image = np.array(og_image)
+
     mean = 0
     standard_deviation = 0.1
     noise = np.random.normal(mean, standard_deviation, image.shape)
@@ -22,7 +27,11 @@ def gaussian_noise(image_path):
 
 
 def uniform_noise(image_path):
-    image = cv2.imread(image_path)
+    # creating an og_image object
+    og_image = Image.open(image_path)
+    # Convert it to numpy array
+    image = np.array(og_image)
+
     row, col, ch = image.shape
     noise = np.random.uniform(-255, 255, (row, col, ch))
     noise = noise.reshape(image.shape)
@@ -33,7 +42,12 @@ def uniform_noise(image_path):
 
 
 def s_and_p_noise(image_path):  # be applied in greyscale image only
-    img_grayscale = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    # creating an og_image object
+    og_image = Image.open(image_path)
+    gray_image = ImageOps.grayscale(og_image)
+
+    # Convert it to numpy array
+    img_grayscale = np.array(gray_image)
 
     # dimensions of the image
     row, col = img_grayscale.shape
