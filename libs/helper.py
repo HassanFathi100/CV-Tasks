@@ -67,7 +67,7 @@ def plot_histogram(intensity_values: list, intensity_counter: int):
     plt.xlabel('intensity value')
     plt.ylabel('number of pixels')
     plt.title('Histogram')
-    plt.savefig('./output/histogram.png', bbox_inches='tight')
+    plt.savefig('../output/histogram.png', bbox_inches='tight')
     plt.show()
     print('histogram.png saved successfully in output directory.')
 
