@@ -4,7 +4,7 @@ from libs import edgeDetection, equalization, noise, normalization, lowPassFilte
 from PIL import Image, ImageOps
 import numpy as np
 
-image_path = './assets/lion.jpg'
+image_path = './assets/apple.jpg'
 
 # creating an og_image object
 og_image = Image.open(image_path)
@@ -42,8 +42,8 @@ def normalize_img():
 
 # Run script
 
-additive_noise()
-low_pass_filters()
-edge_detection()
+# additive_noise()
+# low_pass_filters()
+# edge_detection()
 equalize_img()
 normalize_img()
