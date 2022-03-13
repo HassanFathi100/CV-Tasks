@@ -5,7 +5,7 @@
 import numpy as np
 import numpy
 from PIL import Image
-import helper as Helper
+from . import helper as Helper
 
 
 from PIL import Image, ImageOps

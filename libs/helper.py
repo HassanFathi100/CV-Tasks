@@ -87,3 +87,14 @@ def plot_normalized(intensity_values: list, intensity_counter: int):
     plt.savefig('./output/normalized_histogram.png', bbox_inches='tight')
     plt.show()
     print('normalized_histogram.png saved successfully in output directory.')
+
+
+def plotRGBvsGray(rgb_image, gray_scale_image):
+    # PLOT THE IMAGES
+    fig = plt.figure(1)
+    og_image, gray_image = fig.add_subplot(121), fig.add_subplot(122)
+    og_image.imshow(rgb_image)
+    gray_image.imshow(gray_scale_image, cmap = plt.cm.get_cmap('gray'))
+    fig.show()
+    plt.savefig('./output/RGBvsGray.png', bbox_inches='tight')
+    plt.show()

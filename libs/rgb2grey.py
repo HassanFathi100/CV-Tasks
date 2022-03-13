@@ -1,5 +1,7 @@
-from PIL import Image
+from matplotlib.image import imread
 import matplotlib.pyplot as plt
+from .histogram import calculate_histogram
+from .helper import plotRGBvsGray
 
 def rgb2Grey(image_path: str):
     """Converts RGB image into a gray scale image
@@ -12,7 +14,7 @@ def rgb2Grey(image_path: str):
     """
     
     # Read the RGB image
-    rgb_image = Image.open(image_path)
+    rgb_image = imread(image_path)
 
     ## Separate the RGB channels
     r,g,b = rgb_image[:,:,0], rgb_image[:,:,1], rgb_image[:,:,2]
@@ -23,14 +25,20 @@ def rgb2Grey(image_path: str):
 
     gray_scale_image = (r_const*r)**gamma + (g_const*g)**gamma + (b_const*b)**gamma
 
-    #####################################################
-    # PLOT THE IMAGES
-    fig = plt.figure(1)
-    og_image, gray_image = fig.add_subplot(121), fig.add_subplot(122)
-    og_image.imshow(rgb_image)
-    gray_image.imshow(gray_scale_image, cmp = plt.cm.get_cmap('gray'))
-    fig.show()
-    plt.show()
-    ######################################################
+    plotRGBvsGray(rgb_image, gray_scale_image)
+    plot_RGB_Histo(rgb_image)
 
     return gray_scale_image
+
+
+def plot_RGB_Histo(rgb_image):
+    RGB = [rgb_image[:,:,0], rgb_image[:,:,1], rgb_image[:,:,2]]
+    color = ('b','g','r')
+
+    plt.figure()
+    for i,col in enumerate(color):
+        histr = calculate_histogram(RGB[i])
+        plt.plot(histr, color = col)
+        # plt.xlim([0,1])
+    plt.savefig('./output/RGB_Histo.png', bbox_inches='tight')
+    plt.show()

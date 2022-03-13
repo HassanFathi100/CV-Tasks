@@ -1,4 +1,4 @@
-from libs import edgeDetection, equalization, noise, normalization, lowPassFilters
+from libs import edgeDetection, equalization, noise, normalization, rgb2grey , lowPassFilters
 
 
 from PIL import Image, ImageOps
@@ -39,11 +39,14 @@ def equalize_img():
 def normalize_img():
     normalization.normalize_histogram(image_path)
 
+def rgb_to_gray():
+    _ = rgb2grey.rgb2Gray(image_path)
 
 # Run script
 
 # additive_noise()
 # low_pass_filters()
 # edge_detection()
-equalize_img()
-normalize_img()
+# equalize_img()
+# normalize_img()
+# rgb_to_gray()
