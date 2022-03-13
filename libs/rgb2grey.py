@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from .histogram import calculate_histogram
 from .helper import plotRGBvsGray
 
-def rgb2Grey(image_path: str):
+def rgb2Gray(image_path: str):
     """Converts RGB image into a gray scale image
 
     Args:
@@ -36,9 +36,10 @@ def plot_RGB_Histo(rgb_image):
     color = ('b','g','r')
 
     plt.figure()
+    
     for i,col in enumerate(color):
-        histr = calculate_histogram(RGB[i])
-        plt.plot(histr, color = col)
-        # plt.xlim([0,1])
+        intensity_values, intensity_counter = calculate_histogram(RGB[i])
+        plt.plot(intensity_values, intensity_counter, color = col)
+
     plt.savefig('./output/RGB_Histo.png', bbox_inches='tight')
     plt.show()

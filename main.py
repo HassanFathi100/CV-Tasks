@@ -49,4 +49,4 @@ def rgb_to_gray():
 # edge_detection()
 # equalize_img()
 # normalize_img()
-# rgb_to_gray()
+rgb_to_gray()
