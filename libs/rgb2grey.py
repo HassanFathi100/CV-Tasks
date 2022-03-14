@@ -33,10 +33,10 @@ def rgb2Gray(image_path: str):
 
 def plot_RGB_Histo(rgb_image):
     RGB = [rgb_image[:,:,0], rgb_image[:,:,1], rgb_image[:,:,2]]
-    color = ('b','g','r')
+    color = ('r','g','b')
 
     plt.figure()
-    
+
     for i,col in enumerate(color):
         intensity_values, intensity_counter = calculate_histogram(RGB[i])
         plt.plot(intensity_values, intensity_counter, color = col)
