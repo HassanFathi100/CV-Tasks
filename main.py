@@ -22,7 +22,7 @@ def additive_noise():
 def low_pass_filters():
     lowPassFilters.average_filter(image_path)
     lowPassFilters.apply_gaussian_filter(image_path)
-    # lowPassFilters.median_filter(imgpath)
+    lowPassFilters.Median_filter(image_path)
 
 
 def edge_detection():
@@ -49,4 +49,4 @@ def rgb_to_gray():
 # edge_detection()
 # equalize_img()
 # normalize_img()
-rgb_to_gray()
+# rgb_to_gray()
