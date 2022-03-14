@@ -20,7 +20,7 @@ def average_filter(image_path: str):
     Returns:
         average_filterd_img (nd array): the output image 
     """
-    # creating an a gray scale image 
+    # creating an a gray scale image
     og_image = Image.open(image_path)
     gray_image = ImageOps.grayscale(og_image)
 
@@ -46,7 +46,7 @@ def average_filter(image_path: str):
 
     average_filterd_img = img_new.astype(np.uint8)
 
-    Helper.store_img_cv2(
+    Helper.store_img_pil(
         './output/average_filterd_img.jpg', average_filterd_img)
     return average_filterd_img
 
@@ -63,7 +63,7 @@ def Median_Filter_Calculation(data, filter_size):
     """
     # reseting the temporary list to zero
     temp = []
-    #setting the boundries of the filter 
+    # setting the boundries of the filter
     indexer = filter_size // 2
     data_final = []
     data_final = numpy.zeros((len(data), len(data[0])))
@@ -71,7 +71,7 @@ def Median_Filter_Calculation(data, filter_size):
     for i in range(len(data)):
 
         for j in range(len(data[0])):
-    
+
             # Looping over the filter indices
 
             for z in range(filter_size):
@@ -84,7 +84,7 @@ def Median_Filter_Calculation(data, filter_size):
                         temp.append(0)
                     else:
                         for k in range(filter_size):
-                            #where i = image row,z = filter row, j = image column, k  = filter coloumn  
+                            # where i = image row,z = filter row, j = image column, k  = filter coloumn
                             temp.append(data[i + z - indexer][j + k - indexer])
 
             temp.sort()
@@ -96,18 +96,19 @@ def Median_Filter_Calculation(data, filter_size):
     return data_final
 
 
-def Median_filter(image_path: str):
+def median_filter(image_path: str):
     """ a function that simply calls the Median_Filter_Calculation function and does some conversions  
     """
     img = Image.open(image_path).convert("L")
-    #coverts image into array
+    # coverts image into array
     arr = numpy.array(img)
-    #calls Median_Filter_Calculation function and pass the array (image) and filter size
+    # calls Median_Filter_Calculation function and pass the array (image) and filter size
     removed_noise = Median_Filter_Calculation(arr, 6)
-    #convert from array to image 
+    # convert from array to image
     img = Image.fromarray(removed_noise)
     Median_filtered_img = removed_noise.astype(np.uint8)
-    Helper.store_img_cv2('./output/median_filtered_img.jpg', Median_filtered_img)
+    Helper.store_img_pil(
+        './output/median_filtered_img.jpg', Median_filtered_img)
     return Median_filtered_img
 
 
@@ -124,15 +125,15 @@ def correlation(img_grayscale, mask):
     row, col = img_grayscale.shape
     m, n = mask.shape
     new = np.zeros((row+m-1, col+n-1))
-    #setting the boundries of the image array
+    # setting the boundries of the image array
     n = n//2
     m = m//2
     filtered_img = np.zeros(img_grayscale.shape)
     new[m:new.shape[0]-m, n:new.shape[1]-n] = img_grayscale
-    #looping over the image row indices
+    # looping over the image row indices
     for i in range(m, new.shape[0]-m):
-        
-        #looping over the image coloumn indices
+
+        # looping over the image coloumn indices
         for j in range(n, new.shape[1]-n):
             temp = new[i-m:i+m+1, j-m:j+m+1]
             result = temp*mask
@@ -152,17 +153,17 @@ def gaussian_filter(m, n, sigma):
     Returns:
         gaussian: the filter array
     """
-    #empty array 
+    # empty array
     gaussian = np.zeros((m, n))
-    #setting the boundries of the filter 
+    # setting the boundries of the filter
     m = m//2
     n = n//2
-    #looping over rows
+    # looping over rows
     for x in range(-m, m+1):
-        
-        #looping over rows
+
+        # looping over rows
         for y in range(-n, n+1):
-            #applying the equation of gaussian
+            # applying the equation of gaussian
             x1 = sigma*(2*np.pi)**2
             x2 = np.exp(-(x**2+y**2)/(2*sigma**2))
             gaussian[x+m, y+n] = (1/x1)*x2
@@ -185,17 +186,12 @@ def apply_gaussian_filter(image_path: str):
 
     # Convert it to numpy array
     img_grayscale = np.array(gray_image)
-    
+
     g = gaussian_filter(9, 9, 3)
     n = correlation(img_grayscale, g)
 
     gaussian_filtered_img = n.astype(np.uint8)
 
-    Helper.store_img_cv2('./output/gaussian_filtered_img.jpg',
+    Helper.store_img_pil('./output/gaussian_filtered_img.jpg',
                          gaussian_filtered_img)
     return gaussian_filtered_img
-
-
-# Median_filter("assets/lion.jpg")
-# average_filter("assets/lion.jpg")
-# apply_gaussian_filter("assets/lion.jpg")

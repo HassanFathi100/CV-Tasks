@@ -5,22 +5,15 @@
         Variable names follow the same convention as function names.
 """
 
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-from PIL import Image, ImageOps
+from PIL import Image
 
 
-def store_img_cv2(filepath: str, img: np.ndarray):
-    cv2.imwrite(filepath, img)
-    filename = filepath.split('output/')[1]
-    print(f'{filename} saved successfully in output directory.')
-
-
-def store_img_pil(img_matrix, filepath):
-    result = Image.fromarray((img_matrix).astype(np.uint8))
+def store_img_pil(filepath: str, img: np.ndarray):
+    result = Image.fromarray((img).astype(np.uint8))
     result.save(filepath)
     filename = filepath.split('output/')[1]
     print(f'{filename} saved successfully in output directory.')
@@ -35,24 +28,11 @@ def store_img_plt(filepath: str, img: np.ndarray):
     print(f'{filename} saved successfully in output directory.')
 
 
-def resize_img(img: np.ndarray, x_scale: float = 0.5, y_scale: float = 0.5):
-    img = cv2.resize(img, (0, 0), fx=x_scale, fy=y_scale)
-    return img
-
-
-def showing(img):
-    cv2.namedWindow("test", cv2.WINDOW_NORMAL)
-    img = np.array(img, dtype=float)/float(255)
-    cv2.imshow('test', img)
-    cv2.resizeWindow('test', 600, 600)
-    cv2.waitKey(0)
-
-
-def plot_img(img: np.ndarray):
-
-    final_img = img.astype(np.uint8)
-    cv2.imshow(f'img', final_img)
-    cv2.waitKey(0)
+def resize_img(img: np.ndarray, basewidth: int = 300):
+    w_percent = (basewidth/float(img.size[0]))
+    h_size = int((float(img.size[1])*float(w_percent)))
+    resized_img = img.resize((basewidth, h_size), Image.ANTIALIAS)
+    return resized_img
 
 
 def plot_histogram(intensity_values: list, intensity_counter: int):
@@ -94,7 +74,22 @@ def plotRGBvsGray(rgb_image, gray_scale_image):
     fig = plt.figure(1)
     og_image, gray_image = fig.add_subplot(121), fig.add_subplot(122)
     og_image.imshow(rgb_image)
-    gray_image.imshow(gray_scale_image, cmap = plt.cm.get_cmap('gray'))
+    gray_image.imshow(gray_scale_image, cmap=plt.cm.get_cmap('gray'))
     fig.show()
     plt.savefig('./output/RGBvsGray.png', bbox_inches='tight')
     plt.show()
+
+
+def show_images(images: list[np.ndarray], title: str, labels: list[str]) -> None:
+    n: int = len(images)
+    f = plt.figure()
+
+    f.suptitle(title)
+    for i in range(n):
+        # Debug, plot figure
+        f.add_subplot(1, n, i + 1)
+        # f.set_label(labels[i])
+        plt.imshow(images[i], cmap=plt.cm.get_cmap('gray'))
+        plt.axis('off')
+        plt.title(labels[i])
+    plt.show(block=True)

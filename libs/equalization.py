@@ -50,7 +50,7 @@ def equalization(image_path: str):
     equalized_img = np.reshape(np.asarray(mapped_img_vector),
                                img_grayscale.shape).astype(np.uint8)
 
-    Helper.store_img_cv2('./output/equalized_img.jpg', equalized_img)
+    Helper.store_img_pil('./output/equalized_img.jpg', equalized_img)
     return equalized_img
 
 # Already defined equalization function

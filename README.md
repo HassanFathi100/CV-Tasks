@@ -1,3 +1,11 @@
+# Filtering & Edge Detection
+
+This is a python script for image processing. <br /> <br />
+
+---
+
+<br />
+
 ## Setting Up the Environment
 
 1.  Clone the repo
@@ -9,8 +17,7 @@
 
 2.  Navigate to the created directory
 
-    - 
-      ```sh
+    - ```sh
       cd CV-Tasks
       ```
 
@@ -23,7 +30,7 @@
 4.  Create a Virtual Environment (Optional)
 
         ```sh
-        python -m venv env 
+        python -m venv env
         ```
 
 5.  Activate the virtual environment
@@ -51,3 +58,15 @@
     ```sh
     python main.py
     ```
+
+## Our Team
+
+<br />
+Team #1
+<br />
+
+- Mostafa Mahmoud - (https://github.com/MostafaAbbas-git)
+- Hassan Fathi - (https://github.com/HassanFathi100)
+- Yasser Nasser - (https://github.com/yasser1412)
+- Anas Elahakeam - (https://github.com/AnasElahakeam)
+- Aya Mahmoud -(https://github.com/ayaMahmoud13299)

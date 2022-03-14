@@ -7,10 +7,9 @@ from . import lowPassFilters
 from scipy import ndimage
 
 
-from PIL import Image, ImageOps
+def sobel_kernels(image: np.ndarray):
+    img_grayscale = np.copy(image)
 
-
-def sobel_kernels(img_grayscale: np.ndarray):
     Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
     Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
 
@@ -34,7 +33,6 @@ def non_max_suppression(gradient_matrix: np.ndarray, theta_matrix: np.ndarray):
     Returns:
         _type_: filtered matrix of the same type
     """
-
     m, n = gradient_matrix.shape
     # Create a matrix initialized to 0 of the same size of the original gradient intensity matrix
     Z = np.zeros((m, n), dtype=np.int32)
@@ -156,7 +154,7 @@ def hysteresis(img_grayscale: np.ndarray, weak_value: int, strong_value: int = 2
     return img_grayscale
 
 
-def canny_detector(image_path: str):
+def canny_detector(image: np.ndarray):
     """Canny edge detector algorithm
 
     Args:
@@ -166,12 +164,7 @@ def canny_detector(image_path: str):
         _type_: matrix of the image with canny mask applied 
     """
 
-    # creating an og_image object
-    og_image = Image.open(image_path)
-    gray_image = ImageOps.grayscale(og_image)
-
-    # Convert it to numpy array
-    img_grayscale = np.array(gray_image)
+    img_grayscale = np.copy(image)
 
     # Noise reduction; by applying Gaussian blur to smooth it, where -> kernal 5x5, sigma = 1
     gaussian_mask = lowPassFilters.gaussian_filter(5, 5, 1)
@@ -190,11 +183,11 @@ def canny_detector(image_path: str):
     # Hysteresis; to check for surrounding weak pixels if they have a strong value for better edges.
     final_matrix = hysteresis(threshold_matrix, weak_value, strong_value)
 
-    Helper.store_img_pil(final_matrix, './output/canny_img.bmp')
+    Helper.store_img_pil('./output/canny_img.bmp', final_matrix)
     return final_matrix
 
 
-def sobel_detector(image_path: str):
+def sobel_detector(image: np.ndarray):
     """Detect edges using Sobel algorithm:
 
     Args:
@@ -203,21 +196,16 @@ def sobel_detector(image_path: str):
     Returns:
         _type_: matrix of the image with sobel mask applied 
     """
-
-    # creating an og_image object
-    og_image = Image.open(image_path)
-    gray_image = ImageOps.grayscale(og_image)
-
-    # Convert it to numpy array
-    img_grayscale = np.array(gray_image)
+    # Copy original image
+    img_grayscale = np.copy(image)
 
     magnitude_matrix, _ = sobel_kernels(img_grayscale)
 
-    Helper.store_img_pil(magnitude_matrix, './output/sobel_img.bmp')
+    Helper.store_img_pil('./output/sobel_img.bmp', magnitude_matrix)
     return magnitude_matrix
 
 
-def roberts_detector(image_path: str):
+def roberts_detector(image: np.ndarray):
     """Roberts edge detector algorithm
 
     Args:
@@ -227,12 +215,7 @@ def roberts_detector(image_path: str):
         _type_: matrix of the image with Roberts mask applied 
     """
 
-    # creating an og_image object
-    og_image = Image.open(image_path)
-    gray_image = ImageOps.grayscale(og_image)
-
-    # Convert it to numpy array
-    img_grayscale = np.array(gray_image)
+    img_grayscale = np.copy(image)
 
     # Initialize pair of  Roberts cross operator
     roberts_cross_v = np.array([[1, 0], [0, -1]])
@@ -249,11 +232,11 @@ def roberts_detector(image_path: str):
     edged_matrix = np.sqrt(np.square(Gx) + np.square(Gy))
     edged_matrix *= 255
 
-    Helper.store_img_pil(edged_matrix, './output/roberts_img.bmp')
+    Helper.store_img_pil('./output/roberts_img.bmp', edged_matrix)
     return edged_matrix
 
 
-def prewitt_detector(image_path: str):
+def prewitt_detector(image: np.ndarray):
     """Prewitt edge detector algorithm
 
     Args:
@@ -263,12 +246,8 @@ def prewitt_detector(image_path: str):
         _type_: matrix of the image with Prewitt mask applied 
     """
 
-    # creating an og_image object
-    og_image = Image.open(image_path)
-    gray_image = ImageOps.grayscale(og_image)
-
-    # Convert it to numpy array
-    img_grayscale = np.array(gray_image)
+    # Copy the original image
+    img_grayscale = np.copy(image)
 
     Kx = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]], np.float32)
     Ky = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]], np.float32)
@@ -280,6 +259,6 @@ def prewitt_detector(image_path: str):
     magnitude_matrix = np.hypot(Gx, Gy)
     magnitude_matrix = magnitude_matrix / magnitude_matrix.max() * 255
 
-    Helper.store_img_pil(magnitude_matrix, './output/prewitt_img.bmp')
+    Helper.store_img_pil('./output/prewitt_img.bmp', magnitude_matrix)
 
     return magnitude_matrix
