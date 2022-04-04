@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
+from libs import helper
 from collections import defaultdict
 
-from helper import store_img_pil
 
 def houghCircles(img_path:str, r_min:int = 20, r_max:int = 100, delta_r:int = 1, num_thetas:int = 100, bin_threshold:float = 0.4, min_edge_threshold:int = 100, max_edge_threshold:int = 200, pixel_threshold:int = 20,  post_process:bool = True):
     
@@ -72,8 +72,6 @@ def houghCircles(img_path:str, r_min:int = 20, r_max:int = 100, delta_r:int = 1,
     for x, y, r, v in out_circles:
         output_img = cv2.circle(output_img, (x,y), r, (0,255,0), 2)
     
-    print ("Detecting Hough Circles Complete!")
-    store_img_pil('../output/circlesDetected.png', output_img)
     return output_img
 
 
@@ -121,7 +119,7 @@ def postProcces(out_circles, pixel_threshold):
     return postprocess_circles
 
 
-circle_img = houghCircles('../assets/circles.png', r_min = 20, r_max = 100, bin_threshold = 0.3, pixel_threshold = 20)
+# circle_img = houghCircles('../assets/circles.png', r_min = 20, r_max = 100, bin_threshold = 0.3, pixel_threshold = 20)
 
-cv2.imshow('Detected Circles', circle_img)
-cv2.waitKey(0)
+# cv2.imshow('Detected Circles', circle_img)
+# cv2.waitKey(0)
