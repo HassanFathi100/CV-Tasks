@@ -1,9 +1,10 @@
-from libs import edgeDetection, equalization, noise, normalization, rgb2grey, hybridImage, lowPassFilters, thresholding, helper, frequency_domain_filters
+from libs import edgeDetection, equalization, noise, normalization, rgb2grey, hybridImage, lowPassFilters, thresholding, helper, frequency_domain_filters, snake
 
 from PIL import Image, ImageOps
 import numpy as np
 
 image_path = './assets/apple.jpg'
+# image_path = './assets/cat.jpg'
 
 # Read image using PIL
 og_image = Image.open(image_path)
@@ -32,7 +33,7 @@ helper.show_images([gaussian, uniform, s_and_p],
 average_filter = lowPassFilters.average_filter(image_path)
 gaussian_filter = lowPassFilters.apply_gaussian_filter(image_path)
 median_filter = lowPassFilters.median_filter(image_path)
-helper.show_images([average_filter, gaussian_filter, median_filter],
+helper.show_images([gaussian_filter, gaussian_filter, gaussian_filter],
                    "Filters", ["Average", "Gaussian", "Median"])
 
 
@@ -95,3 +96,6 @@ gray_dog_np = np.array(gray_dog)
 hybrid_img = hybridImage.hybrid_image(gray_cat_np, gray_dog_np)
 helper.show_images([gray_cat_np, gray_dog_np, hybrid_img],
                    "Hybrid images", ["Cat", "Dog", "Hybrid"])
+
+# Active Contour
+snake.activeContour(resized_np_image)

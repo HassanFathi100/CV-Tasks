@@ -186,8 +186,9 @@ def apply_gaussian_filter(image_path: str):
 
     # Convert it to numpy array
     img_grayscale = np.array(gray_image)
+    # img_grayscale = np.array(og_image)
 
-    g = gaussian_filter(9, 9, 3)
+    g = gaussian_filter(7, 7, 7)
     n = correlation(img_grayscale, g)
 
     gaussian_filtered_img = n.astype(np.uint8)

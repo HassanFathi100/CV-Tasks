@@ -7,22 +7,6 @@ from . import lowPassFilters
 from scipy import ndimage
 
 
-def sobel_kernels(image: np.ndarray):
-    img_grayscale = np.copy(image)
-
-    Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
-    Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
-
-    Ix = lowPassFilters.correlation(img_grayscale, Kx)
-    Iy = lowPassFilters.correlation(img_grayscale, Ky)
-
-    magnitude_matrix = np.hypot(Ix, Iy)
-    magnitude_matrix = magnitude_matrix / magnitude_matrix.max() * 255
-    theta_matrix = np.arctan2(Iy, Ix)
-
-    return (magnitude_matrix, theta_matrix)
-
-
 def non_max_suppression(gradient_matrix: np.ndarray, theta_matrix: np.ndarray):
     """Check if the pixels on the same direction are more or less intense than the ones being processed. Used with canny detector
 
@@ -185,6 +169,23 @@ def canny_detector(image: np.ndarray):
 
     Helper.store_img_pil('./output/canny_img.bmp', final_matrix)
     return final_matrix
+
+
+def sobel_kernels(image: np.ndarray):
+    img_grayscale = np.copy(image)
+
+    Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
+    Ky = np.flip(Kx.T)
+    # Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
+
+    Ix = lowPassFilters.correlation(img_grayscale, Kx)
+    Iy = lowPassFilters.correlation(img_grayscale, Ky)
+
+    magnitude_matrix = np.hypot(Ix, Iy)
+    magnitude_matrix = magnitude_matrix / magnitude_matrix.max() * 255
+    theta_matrix = np.arctan2(Iy, Ix)
+
+    return (magnitude_matrix, theta_matrix)
 
 
 def sobel_detector(image: np.ndarray):
