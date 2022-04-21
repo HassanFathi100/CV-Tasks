@@ -1,10 +1,11 @@
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image, ImageOps
 
 from scipy import ndimage as filt
-
 # https://www.crisluengo.net/archives/217/
+
 
 
 def Matrix_A(a, b, N):
@@ -140,6 +141,8 @@ def iterate_snake(x, y, a, b, fx, fy, gamma=0.1, n_iters=10, return_all=True):
     else:
         return (x, y)
 
+    
+
 
 def activeContour(img):
 
@@ -166,6 +169,8 @@ def activeContour(img):
         n_iters=iterations,
         return_all=True
     )
+  
+
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -177,9 +182,16 @@ def activeContour(img):
     ax.plot(np.r_[x, x[0]], np.r_[y, y[0]], c=(0, 1, 0), lw=2)
 
     for i, snake in enumerate(snakes):
+
         if i % 10 == 0:
             ax.plot(np.r_[snake[0], snake[0][0]], np.r_[
                     snake[1], snake[1][0]], c=(0, 0, 1), lw=2)
+        
+
+    x=snake[0]
+    y=snake[1]
+    area=0.5*np.sum(y[:-1]*np.diff(x) - x[:-1]*np.diff(y))  
+    print("Detected Contour with Area: ",abs(area) )
 
     # Plot the last one a different color.
     ax.plot(np.r_[snakes[-1][0], snakes[-1][0][0]],
@@ -188,3 +200,5 @@ def activeContour(img):
     plt.savefig('./output/active_contour.png', bbox_inches='tight')
     print('active_contour.png saved successfully in output directory.')
     plt.show()
+  
+    
