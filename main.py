@@ -1,4 +1,4 @@
-from libs import edgeDetection, equalization, noise, normalization, rgb2grey, hybridImage, lowPassFilters, thresholding, helper, frequency_domain_filters, snake
+from libs import edgeDetection, equalization, noise, normalization, rgb2grey, hybridImage, lowPassFilters, thresholding, helper, frequency_domain_filters, snake, Matching
 
 from PIL import Image, ImageOps
 import numpy as np
@@ -99,3 +99,5 @@ resized_np_image = np.array(resized_gray_img)
 
 # Active Contour
 # snake.activeContour(resized_np_image)
+#featuresMatching
+# Matching.main()
