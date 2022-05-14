@@ -98,4 +98,4 @@ resized_np_image = np.array(resized_gray_img)
 #                    "Hybrid images", ["Cat", "Dog", "Hybrid"])
 
 # Active Contour
-snake.activeContour(resized_np_image)
+# snake.activeContour(resized_np_image)

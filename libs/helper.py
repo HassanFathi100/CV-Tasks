@@ -80,16 +80,16 @@ def plotRGBvsGray(rgb_image, gray_scale_image):
     plt.show()
 
 
-def show_images(images: list[np.ndarray], title: str, labels: list[str]) -> None:
-    n: int = len(images)
-    f = plt.figure()
+# def show_images(images: list[np.ndarray], title: str, labels: list[str]) -> None:
+#     n: int = len(images)
+#     f = plt.figure()
 
-    f.suptitle(title)
-    for i in range(n):
-        # Debug, plot figure
-        f.add_subplot(1, n, i + 1)
-        # f.set_label(labels[i])
-        plt.imshow(images[i], cmap=plt.cm.get_cmap('gray'))
-        plt.axis('off')
-        plt.title(labels[i])
-    plt.show(block=True)
+#     f.suptitle(title)
+#     for i in range(n):
+#         # Debug, plot figure
+#         f.add_subplot(1, n, i + 1)
+#         # f.set_label(labels[i])
+#         plt.imshow(images[i], cmap=plt.cm.get_cmap('gray'))
+#         plt.axis('off')
+#         plt.title(labels[i])
+#     plt.show(block=True)

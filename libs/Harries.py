@@ -175,15 +175,15 @@ def display_image(src):
 """
 the trial of harries functions
 """
-# cow_path = "../assets/assetsNew/harris_image_400.jpg"
-# cow_img = cv2.imread(cow_path, 1)
-# start_time = timeit.default_timer()
-# harris_response = apply_harris_operator(source=cow_img, k=.04)
-# corner_indices, edges_indices, flat_indices = get_harris_indices(harris_response=harris_response,threshold=0.01)
-# img_corners = map_indices_to_image(source=cow_img, indices=corner_indices,color=[255, 0, 0])
-# end_time = timeit.default_timer()
-# elapsed_time = format(end_time - start_time, '.5f')
-# print(elapsed_time)
-# cv2.imshow('image', img_corners)
-# cv2.waitKey(5000)
+cow_path = "./assets/assetsNew/harris_image_400.jpg"
+cow_img = cv2.imread(cow_path, 1)
+start_time = timeit.default_timer()
+harris_response = apply_harris_operator(source=cow_img, k=.04)
+corner_indices, edges_indices, flat_indices = get_harris_indices(harris_response=harris_response,threshold=0.01)
+img_corners = map_indices_to_image(source=cow_img, indices=corner_indices,color=[255, 0, 0])
+end_time = timeit.default_timer()
+elapsed_time = format(end_time - start_time, '.5f')
+print(elapsed_time)
+cv2.imshow('image', img_corners)
+cv2.waitKey(5000)
 
