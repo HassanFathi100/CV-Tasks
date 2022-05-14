@@ -1,7 +1,7 @@
 """Histogram normalization
     """
 import numpy as np
-from . import histogram as hist
+# from . import histogram as hist
 
 
 def normalize_histogram(gray_image: np.ndarray):

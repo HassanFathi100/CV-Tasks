@@ -59,7 +59,7 @@ resized_np_image = np.array(resized_gray_img)
 
 
 # # Local and global thresholding
-# global_return = thresholding.global_thresholding(np_image, 173)
+global_return = thresholding.global_thresholding(np_image, 173)
 # local_return = thresholding.local_thresholding(resized_gray_img)
 # helper.show_images([global_return, local_return],
 #                    "Thresholding", ["Global", "Local"])

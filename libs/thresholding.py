@@ -1,7 +1,7 @@
 from PIL import ImageFilter
 import numpy as np
-from .normalization import normalize_histogram
-from .helper import store_img_pil
+# from normalization import normalize_histogram
+from helper import store_img_pil
 
 
 def otsu_calculations(image_grayscale_PIL):
