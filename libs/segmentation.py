@@ -1,7 +1,9 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-from thresholding import global_thresholding
+import thresholding  
+from PIL import ImageFilter
+from edgeDetection import double_threshold
 
 
 
@@ -31,7 +33,7 @@ def apply_optimal_threshold(source: np.ndarray):
         iteration += 1
     # src[src >= 25] = 0
     # Return Thresholded Image Using Global Thresholding
-    return global_thresholding(src, NewThreshold)
+    return thresholding.global_thresholding(src, NewThreshold)
 
 
 def GetInitialThreshold(source: np.ndarray):
@@ -79,6 +81,78 @@ def GetOptimalThreshold(source: np.ndarray, Threshold):
     OptimalThreshold = (BackMean + ForeMean) / 2
     return OptimalThreshold
 
+def apply_otsu_threshold(source :np.ndarray):
+    """
+     Applies otsue global Thresholding for greyscale image
+     :param source: NumPy Array of The Source Grayscale Image
+     :return: Thresholded Image
+     """
+    input_image = np.copy(source)
+
+    if len(input_image.shape) > 2:
+        input_image = cv2.cvtColor(input_image, cv2.COLOR_RGB2GRAY)
+    else:
+        pass
+    
+    threshold = thresholding.otsu_calculations(input_image)
+    return thresholding.global_thresholding(input_image,threshold)
+
+
+def apply_spectral_threshold(source: np.ndarray):
+    """
+     Applies Thresholding To The Given Grayscale Image Using Spectral Thresholding Method
+     :param source: NumPy Array of The Source Grayscale Image
+     :return: Thresholded Image
+     """
+    src = np.copy(source)
+    if len(src.shape) > 2:
+        src = cv2.cvtColor(src, cv2.COLOR_RGB2GRAY)
+    else:
+        pass
+
+    # Get Image Dimensions
+    YRange, XRange = src.shape
+    # Get The Values of The Histogram Bins
+    HistValues = plt.hist(src.ravel(), 256)[0]
+    # Calculate The Probability Density Function
+    PDF = HistValues / (YRange * XRange)
+    # Calculate The Cumulative Density Function
+    CDF = np.cumsum(PDF)
+    OptimalLow = 1
+    OptimalHigh = 1
+    MaxVariance = 0
+    # Loop Over All Possible Thresholds, Select One With Maximum Variance Between Background & The Object (Foreground)
+    Global = np.arange(0, 256)
+    GMean = sum(Global * PDF) / CDF[-1]
+    for LowT in range(1, 254):
+        for HighT in range(LowT + 1, 255):
+            try:
+                # Background Intensities Array
+                Back = np.arange(0, LowT)
+                # Low Intensities Array
+                Low = np.arange(LowT, HighT)
+                # High Intensities Array
+                High = np.arange(HighT, 256)
+                # Get Low Intensities CDF
+                CDFL = np.sum(PDF[LowT:HighT])
+                # Get Low Intensities CDF
+                CDFH = np.sum(PDF[HighT:256])
+                # Calculation Mean of Background & The Object (Foreground), Based on CDF & PDF
+                BackMean = sum(Back * PDF[0:LowT]) / CDF[LowT]
+                LowMean = sum(Low * PDF[LowT:HighT]) / CDFL
+                HighMean = sum(High * PDF[HighT:256]) / CDFH
+                # Calculate Cross-Class Variance
+                Variance = (CDF[LowT] * (BackMean - GMean) ** 2 + (CDFL * (LowMean - GMean) ** 2) + (
+                        CDFH * (HighMean - GMean) ** 2))
+                # Filter Out Max Variance & It's Threshold
+                if Variance > MaxVariance:
+                    MaxVariance = Variance
+                    OptimalLow = LowT
+                    OptimalHigh = HighT
+            except RuntimeWarning:
+                pass
+    return double_threshold(src, OptimalLow, OptimalHigh, 128, False)
+
 
 def LocalThresholding(source: np.ndarray, RegionsX: int, RegionsY: int, ThresholdingFunction):
     """
@@ -113,19 +187,17 @@ def LocalThresholding(source: np.ndarray, RegionsX: int, RegionsY: int, Threshol
             Result[YRange[y]:YRange[y + 1], XRange[x]:XRange[x + 1]] = ThresholdingFunction(src[YRange[y]:YRange[y + 1], XRange[x]:XRange[x + 1]])
     return Result
 
-
-
-
-
-
 def ApplyThreshold():
    
-    source = cv2.imread("./assets/assetsNew/hand_512.jpg")
-    source = cv2.cvtColor(source, cv2.COLOR_BGR2RGB)
-    img = np.copy(source)
+    img = cv2.imread("./assets/assetsNew/hand_512.png",1)
+    
     OptImg = apply_optimal_threshold(img)
+    OtsuImg = apply_otsu_threshold(img)
+    spec_img = apply_spectral_threshold(img)
     cv2.imshow('Optimal thresholded img', OptImg)
-    cv2.waitKey()
+    cv2.imshow('Otsuimal thresholded img', OtsuImg)
+    cv2.imshow('spectimal thresholded img', spec_img)
+    cv2.waitKey(5000)
 
 if __name__ == "__main__":
     ApplyThreshold()

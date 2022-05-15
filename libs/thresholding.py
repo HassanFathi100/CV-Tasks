@@ -1,6 +1,6 @@
 from PIL import ImageFilter
 import numpy as np
-# from normalization import normalize_histogram
+from normalization import normalize_histogram
 from helper import store_img_pil
 
 
@@ -9,7 +9,7 @@ def otsu_calculations(image_grayscale_PIL):
     image = image_grayscale_PIL
 
     blurred_image = image.filter(ImageFilter.GaussianBlur(radius=1.5))
-    blurred_image = np.copy(blurred_image)
+    blurred_image = np.copy(image)
     # store_img_pil(blurred_image, './output/blurred_image_pil.jpg')
 
     _, _, count_intensity = normalize_histogram(
